@@ -11,16 +11,18 @@ web_app_name="your_web_app_name"
 resource_group="your_web_app_resource_group"
 
 # Fetch the web app details including URL and state
-web_app_info=$(az webapp show --name $web_app_name --resource-group $resource_group --query "[url,state]" --output tsv)
-read -r web_app_url web_app_state <<< "$web_app_info"
+web_app_url=$(az webapp show --name $web_app_name --resource-group $resource_group --query "defaultHostName" --output tsv)
+web_app_state=$(az webapp show --name $web_app_name --resource-group $resource_group --query "state" --output tsv)
 
-# Check the current state of the web app
+# Check the current state of the web app. Start or stop it.
 if [ "$web_app_state" == "Running" ]; then
-    echo "Web App is currently running."
+    echo "$web_app_name is currently running. Stopping it..."
+    az webapp stop --name $web_app_name --resource-group $resource_group
 elif [ "$web_app_state" == "Stopped" ]; then
-    echo "Web App is currently stopped."
+    echo "$web_app_name is currently stopped. Starting it..."
+    az webapp start --name $web_app_name --resource-group $resource_group
 else
-    echo "Web App is in an unknown state: $web_app_state"
+    echo "$web_app_name is in an unknown state: $web_app_state"
 fi
 
 # Display the URL to the user (last line).
