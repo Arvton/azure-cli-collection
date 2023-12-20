@@ -1,6 +1,8 @@
 #!/bin/bash
-# Run this script to start or stop a specific Azure web app
+# Run this script to start or stop a specific Azure web app.
 # The current state of the web app is checked to figure out which action is needed.
+# The URL of web app is given at the end to use as needed.
+
 # To find out your web app's name and resource group, you can try something like the following:
 # az webapp list --output table
 
